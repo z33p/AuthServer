@@ -10,13 +10,13 @@ using AuthServer.Repositories;
 
 namespace AuthServer.Controllers
 {
-  [Route("v1/account")]
-  public class HomeController : Controller
+  [Route("v1/accounts")]
+  public class AuthController : Controller
   {
     [HttpPost]
     [Route("login")]
     [AllowAnonymous]
-    public ActionResult<dynamic> Authenticate([FromBody] User model)
+    public ActionResult<dynamic> Login([FromBody] User model)
     {
       var user = UserRepository.Get(model.Username, model.Password);
 
@@ -35,22 +35,17 @@ namespace AuthServer.Controllers
     [HttpGet]
     [Route("anonymous")]
     [AllowAnonymous]
-    public string Anonymous() => "Anônimo";
-
-    [HttpGet]
-    [Route("authenticated")]
-    [Authorize]
-    public string Authenticated() => String.Format("Autenticado - {0}", User.Identity.Name);
+    public string Anonymous() => "Anonymous";
 
     [HttpGet]
     [Route("employee")]
     [Authorize(Roles = "employee,manager")]
-    public string Employee() => "Funcionário";
+    public string Employee() => "Employee";
 
     [HttpGet]
     [Route("manager")]
     [Authorize(Roles = "manager")]
-    public string Manager() => "Gerente";
+    public string Manager() => "Manager";
 
   }
 }
