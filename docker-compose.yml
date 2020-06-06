@@ -1,0 +1,30 @@
+version: "3.5"
+
+networks:
+  localdev:
+    name: localdev
+
+services:
+  app:
+    build: ./
+    image: authserver:1.0.0
+    container_name: authserver
+    restart: always
+    ports:
+      - "5000:80"
+    depends_on:
+      - database
+    networks:
+      - localdev
+
+  database:
+    image: postgres
+    container_name: database
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - ./Database/pgdata:/var/lib/postgresql/data
+    networks:
+      - localdev
